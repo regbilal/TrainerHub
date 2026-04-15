@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TrainerHub.Application.Auth;
 using TrainerHub.Application.DTOs;
@@ -7,6 +8,7 @@ namespace TrainerHub.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[AllowAnonymous]
 public class AuthController : ControllerBase
 {
     private readonly IMediator _mediator;

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TrainerHub.Domain.Entities;
@@ -7,7 +8,7 @@ namespace TrainerHub.Infrastructure.Data;
 
 public static class DatabaseSeeder
 {
-    public static async Task SeedAsync(ApplicationDbContext context, ILogger logger)
+    public static async Task SeedAsync(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ILogger logger)
     {
         if (await context.Users.AnyAsync())
         {
@@ -18,106 +19,16 @@ public static class DatabaseSeeder
         logger.LogInformation("Seeding database with test data...");
 
         var now = DateTime.UtcNow;
-        var passwordHash = BCrypt.Net.BCrypt.HashPassword("Test123!");
 
-        // ── Users ──────────────────────────────────────────────────
-        var coach1 = new User
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "Ahmed",
-            LastName = "Benali",
-            Email = "coach@test.com",
-            PhoneNumber = "+212600000001",
-            PasswordHash = passwordHash,
-            Role = UserRole.Coach,
-            CreatedAt = now.AddMonths(-3)
-        };
-
-        var coach2 = new User
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "Sara",
-            LastName = "Martinez",
-            Email = "sara.coach@test.com",
-            PhoneNumber = "+212600000002",
-            PasswordHash = passwordHash,
-            Role = UserRole.Coach,
-            CreatedAt = now.AddMonths(-2)
-        };
-
-        var clientUser1 = new User
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "Youssef",
-            LastName = "Alami",
-            Email = "client@test.com",
-            PhoneNumber = "+212600000003",
-            PasswordHash = passwordHash,
-            Role = UserRole.Client,
-            CreatedAt = now.AddMonths(-2)
-        };
-
-        var clientUser2 = new User
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "Fatima",
-            LastName = "Zahra",
-            Email = "fatima@test.com",
-            PhoneNumber = "+212600000004",
-            PasswordHash = passwordHash,
-            Role = UserRole.Client,
-            CreatedAt = now.AddMonths(-1)
-        };
-
-        var clientUser3 = new User
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "Omar",
-            LastName = "Idrissi",
-            Email = "omar@test.com",
-            PhoneNumber = "+212600000005",
-            PasswordHash = passwordHash,
-            Role = UserRole.Client,
-            CreatedAt = now.AddDays(7 *-3)
-        };
-
-        var coach3 = new User
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "خالد",
-            LastName = "العمري",
-            Email = "khaled.coach@test.com",
-            PhoneNumber = "+966500000001",
-            PasswordHash = passwordHash,
-            Role = UserRole.Coach,
-            CreatedAt = now.AddMonths(-4)
-        };
-
-        var clientUser4 = new User
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "محمد",
-            LastName = "الشهري",
-            Email = "mohammed@test.com",
-            PhoneNumber = "+966500000002",
-            PasswordHash = passwordHash,
-            Role = UserRole.Client,
-            CreatedAt = now.AddMonths(-3)
-        };
-
-        var clientUser5 = new User
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "نورة",
-            LastName = "القحطاني",
-            Email = "noura@test.com",
-            PhoneNumber = "+966500000003",
-            PasswordHash = passwordHash,
-            Role = UserRole.Client,
-            CreatedAt = now.AddMonths(-2)
-        };
-
-        context.Users.AddRange(coach1, coach2, coach3, clientUser1, clientUser2, clientUser3, clientUser4, clientUser5);
+        // ── Users (ASP.NET Core Identity) ──────────────────────────
+        var coach1 = await SeedUserAsync(userManager, "coach@test.com", "Ahmed", "Benali", "+212600000001", UserRole.Coach, now.AddMonths(-3));
+        var coach2 = await SeedUserAsync(userManager, "sara.coach@test.com", "Sara", "Martinez", "+212600000002", UserRole.Coach, now.AddMonths(-2));
+        var clientUser1 = await SeedUserAsync(userManager, "client@test.com", "Youssef", "Alami", "+212600000003", UserRole.Client, now.AddMonths(-2));
+        var clientUser2 = await SeedUserAsync(userManager, "fatima@test.com", "Fatima", "Zahra", "+212600000004", UserRole.Client, now.AddMonths(-1));
+        var clientUser3 = await SeedUserAsync(userManager, "omar@test.com", "Omar", "Idrissi", "+212600000005", UserRole.Client, now.AddDays(7 * -3));
+        var coach3 = await SeedUserAsync(userManager, "khaled.coach@test.com", "خالد", "العمري", "+966500000001", UserRole.Coach, now.AddMonths(-4));
+        var clientUser4 = await SeedUserAsync(userManager, "mohammed@test.com", "محمد", "الشهري", "+966500000002", UserRole.Client, now.AddMonths(-3));
+        var clientUser5 = await SeedUserAsync(userManager, "noura@test.com", "نورة", "القحطاني", "+966500000003", UserRole.Client, now.AddMonths(-2));
 
         // ── Clients (coach-client relationships) ───────────────────
         var client1 = new Client
@@ -127,7 +38,7 @@ public static class DatabaseSeeder
             CoachId = coach1.Id,
             FirstName = clientUser1.FirstName,
             LastName = clientUser1.LastName,
-            PhoneNumber = clientUser1.PhoneNumber,
+            PhoneNumber = clientUser1.PhoneNumber ?? string.Empty,
             InvitationToken = Guid.NewGuid().ToString("N"),
             InvitationStatus = InvitationStatus.Accepted,
             InvitedAt = now.AddMonths(-2),
@@ -141,7 +52,7 @@ public static class DatabaseSeeder
             CoachId = coach1.Id,
             FirstName = clientUser2.FirstName,
             LastName = clientUser2.LastName,
-            PhoneNumber = clientUser2.PhoneNumber,
+            PhoneNumber = clientUser2.PhoneNumber ?? string.Empty,
             InvitationToken = Guid.NewGuid().ToString("N"),
             InvitationStatus = InvitationStatus.Accepted,
             InvitedAt = now.AddMonths(-1),
@@ -155,7 +66,7 @@ public static class DatabaseSeeder
             CoachId = coach2.Id,
             FirstName = clientUser3.FirstName,
             LastName = clientUser3.LastName,
-            PhoneNumber = clientUser3.PhoneNumber,
+            PhoneNumber = clientUser3.PhoneNumber ?? string.Empty,
             InvitationToken = Guid.NewGuid().ToString("N"),
             InvitationStatus = InvitationStatus.Accepted,
             InvitedAt = now.AddDays(7 *-3),
@@ -182,7 +93,7 @@ public static class DatabaseSeeder
             CoachId = coach3.Id,
             FirstName = clientUser4.FirstName,
             LastName = clientUser4.LastName,
-            PhoneNumber = clientUser4.PhoneNumber,
+            PhoneNumber = clientUser4.PhoneNumber ?? string.Empty,
             InvitationToken = Guid.NewGuid().ToString("N"),
             InvitationStatus = InvitationStatus.Accepted,
             InvitedAt = now.AddMonths(-3),
@@ -196,7 +107,7 @@ public static class DatabaseSeeder
             CoachId = coach3.Id,
             FirstName = clientUser5.FirstName,
             LastName = clientUser5.LastName,
-            PhoneNumber = clientUser5.PhoneNumber,
+            PhoneNumber = clientUser5.PhoneNumber ?? string.Empty,
             InvitationToken = Guid.NewGuid().ToString("N"),
             InvitationStatus = InvitationStatus.Accepted,
             InvitedAt = now.AddMonths(-2),
@@ -914,5 +825,35 @@ public static class DatabaseSeeder
             "{MealPrograms} meal programs, {Assignments} assignments, {Logs} workout logs, " +
             "{Progress} progress entries, {Reviews} reviews, {Connections} connection requests.",
             8, 7, 7, 5, 9, workoutLogs.Count, progressEntries.Count, 7, 5);
+    }
+
+    private static async Task<ApplicationUser> SeedUserAsync(
+        UserManager<ApplicationUser> userManager,
+        string email,
+        string firstName,
+        string lastName,
+        string phoneNumber,
+        UserRole role,
+        DateTime createdAt)
+    {
+        var user = new ApplicationUser
+        {
+            Id = Guid.NewGuid(),
+            UserName = email,
+            Email = email,
+            EmailConfirmed = true,
+            FirstName = firstName,
+            LastName = lastName,
+            PhoneNumber = phoneNumber,
+            Role = role,
+            CreatedAt = createdAt
+        };
+        var result = await userManager.CreateAsync(user, "Test123!");
+        if (!result.Succeeded)
+        {
+            var errors = string.Join("; ", result.Errors.Select(e => $"{e.Code}:{e.Description}"));
+            throw new InvalidOperationException($"Failed to seed user {email}: {errors}");
+        }
+        return user;
     }
 }

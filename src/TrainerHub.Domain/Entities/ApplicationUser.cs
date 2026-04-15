@@ -1,26 +1,16 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 using TrainerHub.Domain.Enums;
 
 namespace TrainerHub.Domain.Entities;
 
-public class User
+public class ApplicationUser : IdentityUser<Guid>
 {
-    public Guid Id { get; set; }
-
     [MaxLength(100)]
     public string FirstName { get; set; } = string.Empty;
 
     [MaxLength(100)]
     public string LastName { get; set; } = string.Empty;
-
-    [MaxLength(256)]
-    public string Email { get; set; } = string.Empty;
-
-    [MaxLength(32)]
-    public string PhoneNumber { get; set; } = string.Empty;
-
-    [MaxLength(512)]
-    public string PasswordHash { get; set; } = string.Empty;
 
     public UserRole Role { get; set; }
 

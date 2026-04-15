@@ -4,7 +4,7 @@ namespace TrainerHub.Domain.Interfaces;
 
 public interface ITokenService
 {
-    string GenerateToken(User user);
+    string GenerateToken(ApplicationUser user);
 
     string GenerateInvitationToken();
 }

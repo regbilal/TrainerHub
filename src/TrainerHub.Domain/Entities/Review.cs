@@ -23,7 +23,7 @@ public class Review
 
     public virtual Client ClientRelationship { get; set; } = null!;
 
-    public virtual User Reviewer { get; set; } = null!;
+    public virtual ApplicationUser Reviewer { get; set; } = null!;
 
-    public virtual User Reviewee { get; set; } = null!;
+    public virtual ApplicationUser Reviewee { get; set; } = null!;
 }

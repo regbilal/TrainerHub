@@ -23,7 +23,7 @@ public class SearchCoachesQueryHandler : IRequestHandler<SearchCoachesQuery, Lis
             query = query.Where(u =>
                 u.FirstName.ToLower().Contains(term) ||
                 u.LastName.ToLower().Contains(term) ||
-                u.Email.ToLower().Contains(term));
+                (u.Email != null && u.Email.ToLower().Contains(term)));
         }
 
         return await query
@@ -34,7 +34,7 @@ public class SearchCoachesQueryHandler : IRequestHandler<SearchCoachesQuery, Lis
                 u.Id,
                 u.FirstName,
                 u.LastName,
-                u.Email,
+                u.Email ?? string.Empty,
                 u.ReviewsReceived.Any() ? (double?)u.ReviewsReceived.Average(r => r.Rating) : null,
                 u.ReviewsReceived.Count))
             .ToListAsync(cancellationToken);

@@ -21,7 +21,7 @@ public class MealProgram
 
     public ProgramStatus Status { get; set; }
 
-    public virtual User Coach { get; set; } = null!;
+    public virtual ApplicationUser Coach { get; set; } = null!;
 
     public virtual ICollection<MealDay> Days { get; set; } = new List<MealDay>();
 

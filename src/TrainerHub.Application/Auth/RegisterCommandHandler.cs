@@ -1,5 +1,5 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using TrainerHub.Application.DTOs;
 using TrainerHub.Application.Resources;
@@ -11,39 +11,45 @@ namespace TrainerHub.Application.Auth;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthResponse>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly ITokenService _tokenService;
     private readonly IStringLocalizer<ErrorMessages> _localizer;
 
-    public RegisterCommandHandler(IApplicationDbContext context, ITokenService tokenService, IStringLocalizer<ErrorMessages> localizer)
+    public RegisterCommandHandler(
+        UserManager<ApplicationUser> userManager,
+        ITokenService tokenService,
+        IStringLocalizer<ErrorMessages> localizer)
     {
-        _context = context;
+        _userManager = userManager;
         _tokenService = tokenService;
         _localizer = localizer;
     }
 
     public async Task<AuthResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var existingUser = await _context.Users
-            .AnyAsync(u => u.Email == request.Email, cancellationToken);
-
-        if (existingUser)
+        var email = request.Email.Trim();
+        var existingUser = await _userManager.FindByEmailAsync(email);
+        if (existingUser is not null)
             throw new InvalidOperationException(_localizer["EmailAlreadyExists"]);
 
-        var user = new User
+        var user = new ApplicationUser
         {
-            Id = Guid.NewGuid(),
+            UserName = email,
+            Email = email,
+            EmailConfirmed = true,
             FirstName = request.FirstName,
             LastName = request.LastName,
-            Email = request.Email,
-            PhoneNumber = request.PhoneNumber ?? string.Empty,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+            PhoneNumber = string.IsNullOrWhiteSpace(request.PhoneNumber) ? null : request.PhoneNumber,
             Role = UserRole.Coach,
             CreatedAt = DateTime.UtcNow
         };
 
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync(cancellationToken);
+        var result = await _userManager.CreateAsync(user, request.Password);
+        if (!result.Succeeded)
+        {
+            var message = string.Join(" ", result.Errors.Select(e => e.Description));
+            throw new InvalidOperationException(string.IsNullOrWhiteSpace(message) ? _localizer["UnexpectedError"].Value : message);
+        }
 
         var token = _tokenService.GenerateToken(user);
 
@@ -51,8 +57,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
             user.Id,
             user.FirstName,
             user.LastName,
-            user.Email,
-            user.PhoneNumber,
+            user.Email ?? email,
+            user.PhoneNumber ?? string.Empty,
             user.Role.ToString()));
     }
 }

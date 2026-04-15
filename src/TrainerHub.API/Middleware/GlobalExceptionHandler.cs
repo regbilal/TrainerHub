@@ -27,11 +27,11 @@ public class GlobalExceptionHandler
         {
             await _next(context);
         }
-        catch (Exception ex)
+        catch (Exception raw)
         {
-            _logger.LogError(ex, "Unhandled exception on {Method} {Path}", context.Request.Method, context.Request.Path);
+            var ex = Unwrap(raw);
 
-            await PersistErrorLog(context, ex);
+            _logger.LogError(ex, "Unhandled exception on {Method} {Path}", context.Request.Method, context.Request.Path);
 
             var (statusCode, message) = ex switch
             {
@@ -41,17 +41,32 @@ public class GlobalExceptionHandler
                 _ => (HttpStatusCode.InternalServerError, GetFallbackMessage(context))
             };
 
+            await PersistErrorLog(context, ex, (int)statusCode);
+
+            if (context.Response.HasStarted)
+            {
+                _logger.LogWarning("Response already started; cannot write error JSON for {Path}", context.Request.Path);
+                throw;
+            }
+
             context.Response.StatusCode = (int)statusCode;
             context.Response.ContentType = "application/json";
             await context.Response.WriteAsync(JsonSerializer.Serialize(new { error = message }));
         }
     }
 
-    private async Task PersistErrorLog(HttpContext context, Exception ex)
+    private static Exception Unwrap(Exception ex)
+    {
+        if (ex is AggregateException agg && agg.InnerExceptions.Count == 1)
+            return agg.InnerExceptions[0];
+        return ex;
+    }
+
+    private async Task PersistErrorLog(HttpContext context, Exception ex, int statusCode)
     {
         try
         {
-            using var scope = context.RequestServices.CreateScope();
+            await using var scope = context.RequestServices.CreateAsyncScope();
             var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
             string? requestBody = null;
@@ -76,6 +91,7 @@ public class GlobalExceptionHandler
                 OccurredAt = DateTime.UtcNow,
                 RequestPath = Truncate($"{context.Request.Path}", 500),
                 HttpMethod = context.Request.Method,
+                StatusCode = statusCode,
                 ExceptionType = Truncate(ex.GetType().FullName, 512),
                 Message = Truncate(ex.Message, 2000),
                 StackTrace = ex.StackTrace,
@@ -87,7 +103,8 @@ public class GlobalExceptionHandler
             };
 
             db.ErrorLogs.Add(errorLog);
-            await db.SaveChangesAsync(default);
+            await db.SaveChangesAsync(context.RequestAborted);
+            _logger.LogInformation("Persisted ErrorLog {Id} for {Path} ({Status})", errorLog.Id, errorLog.RequestPath, statusCode);
         }
         catch (Exception logEx)
         {

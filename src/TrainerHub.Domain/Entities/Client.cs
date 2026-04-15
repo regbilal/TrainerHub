@@ -29,9 +29,9 @@ public class Client
 
     public DateTime? JoinedAt { get; set; }
 
-    public virtual User? User { get; set; }
+    public virtual ApplicationUser? User { get; set; }
 
-    public virtual User Coach { get; set; } = null!;
+    public virtual ApplicationUser Coach { get; set; } = null!;
 
     public virtual ICollection<ProgramAssignment> ProgramAssignments { get; set; } = new List<ProgramAssignment>();
 

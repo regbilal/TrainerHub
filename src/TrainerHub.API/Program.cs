@@ -1,7 +1,9 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using TrainerHub.Domain.Entities;
 using TrainerHub.Application;
 using TrainerHub.Infrastructure;
 using TrainerHub.Infrastructure.Data;
@@ -47,7 +49,8 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await db.Database.MigrateAsync();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-    await DatabaseSeeder.SeedAsync(db, logger);
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    await DatabaseSeeder.SeedAsync(db, userManager, logger);
 }
 
 app.UseCors("AllowAll");

@@ -1,17 +1,17 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TrainerHub.Domain.Entities;
 using TrainerHub.Domain.Interfaces;
 
 namespace TrainerHub.Infrastructure.Data;
 
-public class ApplicationDbContext : DbContext, IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>, IApplicationDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }
-
-    public DbSet<User> Users => Set<User>();
 
     public DbSet<Client> Clients => Set<Client>();
 
@@ -43,9 +43,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>(entity =>
+        modelBuilder.Entity<ApplicationUser>(entity =>
         {
-            entity.HasIndex(e => e.Email).IsUnique();
+            entity.ToTable("Users");
 
             entity.HasMany(e => e.CoachClients)
                 .WithOne(e => e.Coach)

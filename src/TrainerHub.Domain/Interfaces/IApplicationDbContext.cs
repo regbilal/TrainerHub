@@ -5,7 +5,7 @@ namespace TrainerHub.Domain.Interfaces;
 
 public interface IApplicationDbContext
 {
-    DbSet<User> Users { get; }
+    DbSet<ApplicationUser> Users { get; }
 
     DbSet<Client> Clients { get; }
 

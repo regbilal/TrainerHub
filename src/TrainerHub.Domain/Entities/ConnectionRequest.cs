@@ -30,5 +30,5 @@ public class ConnectionRequest
 
     public DateTime? ReviewedAt { get; set; }
 
-    public virtual User Coach { get; set; } = null!;
+    public virtual ApplicationUser Coach { get; set; } = null!;
 }

@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using TrainerHub.Application.DTOs;
@@ -12,12 +13,18 @@ namespace TrainerHub.Application.Auth;
 public class CompleteOnboardingCommandHandler : IRequestHandler<CompleteOnboardingCommand, AuthResponse>
 {
     private readonly IApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly ITokenService _tokenService;
     private readonly IStringLocalizer<ErrorMessages> _localizer;
 
-    public CompleteOnboardingCommandHandler(IApplicationDbContext context, ITokenService tokenService, IStringLocalizer<ErrorMessages> localizer)
+    public CompleteOnboardingCommandHandler(
+        IApplicationDbContext context,
+        UserManager<ApplicationUser> userManager,
+        ITokenService tokenService,
+        IStringLocalizer<ErrorMessages> localizer)
     {
         _context = context;
+        _userManager = userManager;
         _tokenService = tokenService;
         _localizer = localizer;
     }
@@ -33,19 +40,25 @@ public class CompleteOnboardingCommandHandler : IRequestHandler<CompleteOnboardi
         if (client.InvitationStatus != InvitationStatus.Pending)
             throw new InvalidOperationException(_localizer["InvitationAlreadyUsed"]);
 
-        var user = new User
+        var syntheticEmail = $"{client.PhoneNumber}@trainerhub.app";
+        var user = new ApplicationUser
         {
-            Id = Guid.NewGuid(),
+            UserName = syntheticEmail,
+            Email = syntheticEmail,
+            EmailConfirmed = true,
             FirstName = request.FirstName ?? client.FirstName,
             LastName = request.LastName ?? client.LastName,
-            Email = $"{client.PhoneNumber}@trainerhub.app",
             PhoneNumber = client.PhoneNumber,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
             Role = UserRole.Client,
             CreatedAt = DateTime.UtcNow
         };
 
-        _context.Users.Add(user);
+        var createResult = await _userManager.CreateAsync(user, request.Password);
+        if (!createResult.Succeeded)
+        {
+            var message = string.Join(" ", createResult.Errors.Select(e => e.Description));
+            throw new InvalidOperationException(string.IsNullOrWhiteSpace(message) ? _localizer["UnexpectedError"].Value : message);
+        }
 
         client.UserId = user.Id;
         client.InvitationStatus = InvitationStatus.Accepted;
@@ -64,8 +77,8 @@ public class CompleteOnboardingCommandHandler : IRequestHandler<CompleteOnboardi
             user.Id,
             user.FirstName,
             user.LastName,
-            user.Email,
-            user.PhoneNumber,
+            user.Email ?? syntheticEmail,
+            user.PhoneNumber ?? string.Empty,
             user.Role.ToString()));
     }
 }
