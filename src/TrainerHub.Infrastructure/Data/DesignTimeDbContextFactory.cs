@@ -8,8 +8,13 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Applicatio
 {
     public ApplicationDbContext CreateDbContext(string[] args)
     {
+        var basePath = Path.Combine(Directory.GetCurrentDirectory(), "..", "TrainerHub.API");
+
+        if (!Directory.Exists(basePath))
+            basePath = Directory.GetCurrentDirectory();
+
         var configuration = new ConfigurationBuilder()
-            .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "..", "TrainerHub.API"))
+            .SetBasePath(basePath)
             .AddJsonFile("appsettings.json", optional: false)
             .Build();
 
