@@ -50,6 +50,8 @@ using (var scope = app.Services.CreateScope())
     await DatabaseSeeder.SeedAsync(db, logger);
 }
 
+app.UseCors("AllowAll");
+
 app.UseMiddleware<TrainerHub.API.Middleware.GlobalExceptionHandler>();
 
 if (app.Environment.IsDevelopment())
@@ -57,8 +59,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseCors("AllowAll");
 
 var supportedCultures = new[] { "en", "ar", "fr", "es" };
 app.UseRequestLocalization(options =>

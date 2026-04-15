@@ -9,6 +9,7 @@ import CoachProgramForm from './pages/coach/ProgramForm';
 import CoachPrograms from './pages/coach/Programs';
 import CoachMealPrograms from './pages/coach/MealPrograms';
 import CoachMealProgramForm from './pages/coach/MealProgramForm';
+import CoachErrorLogs from './pages/coach/ErrorLogs';
 import ClientDashboard from './pages/client/Dashboard';
 import ClientProgramView from './pages/client/ProgramView';
 import ClientMealProgramView from './pages/client/MealProgramView';
@@ -47,6 +48,7 @@ export default function App() {
         <Route path="meals" element={<CoachMealPrograms />} />
         <Route path="meals/new" element={<CoachMealProgramForm />} />
         <Route path="meals/:id/edit" element={<CoachMealProgramForm />} />
+        <Route path="errors" element={<CoachErrorLogs />} />
       </Route>
 
       <Route path="/client" element={<ProtectedRoute role="Client"><Layout /></ProtectedRoute>}>

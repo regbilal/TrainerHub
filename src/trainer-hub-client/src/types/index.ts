@@ -147,6 +147,29 @@ export interface MealProgramAssignment {
   mealProgram?: MealProgram;
 }
 
+export interface ErrorLog {
+  id: string;
+  occurredAt: string;
+  requestPath?: string;
+  httpMethod?: string;
+  statusCode?: number;
+  exceptionType?: string;
+  message?: string;
+  stackTrace?: string;
+  innerExceptionMessage?: string;
+  userId?: string;
+  clientIpAddress?: string;
+  requestBody?: string;
+  queryString?: string;
+}
+
+export interface ErrorLogResponse {
+  items: ErrorLog[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+}
+
 export interface ConnectionRequest {
   id: string;
   coachId: string;

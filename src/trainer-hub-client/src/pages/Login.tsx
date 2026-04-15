@@ -35,10 +35,12 @@ export default function Login() {
       const role = readStoredUserRole();
       navigate(role === 'Coach' ? '/coach' : '/client');
     } catch (err: unknown) {
-      const message =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response?: { data?: { error?: string } } }).response?.data?.error
-          : undefined;
+      let message: string | undefined;
+      if (err && typeof err === 'object' && 'response' in err) {
+        message = (err as { response?: { data?: { error?: string } } }).response?.data?.error;
+      } else if (err && typeof err === 'object' && 'request' in err) {
+        message = t('login.connectionError');
+      }
       setError(message || t('login.invalidCredentials'));
     } finally {
       setLoading(false);

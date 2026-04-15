@@ -37,6 +37,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
     public DbSet<MealProgramAssignment> MealProgramAssignments => Set<MealProgramAssignment>();
 
+    public DbSet<ErrorLog> ErrorLogs => Set<ErrorLog>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

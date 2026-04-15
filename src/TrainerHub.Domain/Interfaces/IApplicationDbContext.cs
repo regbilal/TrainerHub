@@ -31,5 +31,7 @@ public interface IApplicationDbContext
 
     DbSet<MealProgramAssignment> MealProgramAssignments { get; }
 
+    DbSet<ErrorLog> ErrorLogs { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

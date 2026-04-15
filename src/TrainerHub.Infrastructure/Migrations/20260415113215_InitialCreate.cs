@@ -12,6 +12,29 @@ namespace TrainerHub.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "ErrorLogs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OccurredAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RequestPath = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    HttpMethod = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    StatusCode = table.Column<int>(type: "int", nullable: true),
+                    ExceptionType = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    StackTrace = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InnerExceptionMessage = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ClientIpAddress = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    RequestBody = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QueryString = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ErrorLogs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -482,6 +505,9 @@ namespace TrainerHub.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ConnectionRequests");
+
+            migrationBuilder.DropTable(
+                name: "ErrorLogs");
 
             migrationBuilder.DropTable(
                 name: "MealItems");

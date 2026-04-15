@@ -12,6 +12,7 @@ import {
   User,
   Home,
   Dumbbell,
+  AlertTriangle,
 } from 'lucide-react';
 
 export default function Layout() {
@@ -22,6 +23,7 @@ export default function Layout() {
 
   const getTitle = () => {
     if (isCoach) {
+      if (location.pathname.includes('/errors')) return 'Error Logs';
       if (location.pathname.includes('/meals')) return t('layout.meals');
       if (location.pathname.includes('/programs')) return t('layout.programs');
       if (location.pathname.includes('/clients/')) return t('layout.clientDetail');
@@ -37,6 +39,7 @@ export default function Layout() {
     { to: '/coach', icon: LayoutDashboard, label: t('layout.dashboard') },
     { to: '/coach/programs', icon: ClipboardList, label: t('layout.programs') },
     { to: '/coach/meals', icon: UtensilsCrossed, label: t('layout.meals') },
+    { to: '/coach/errors', icon: AlertTriangle, label: 'Errors' },
     { to: '/coach', icon: User, label: t('layout.profile') },
   ];
 
