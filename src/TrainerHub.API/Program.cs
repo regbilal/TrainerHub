@@ -1,8 +1,10 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TrainerHub.Application;
 using TrainerHub.Infrastructure;
+using TrainerHub.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +41,14 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await db.Database.MigrateAsync();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    await DatabaseSeeder.SeedAsync(db, logger);
+}
 
 app.UseMiddleware<TrainerHub.API.Middleware.GlobalExceptionHandler>();
 
