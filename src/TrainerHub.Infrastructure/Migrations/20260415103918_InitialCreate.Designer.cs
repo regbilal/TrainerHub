@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainerHub.Infrastructure.Data;
 
 #nullable disable
 
-namespace TrainerHub.Infrastructure.Data.Migrations
+namespace TrainerHub.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260415103918_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -612,13 +615,13 @@ namespace TrainerHub.Infrastructure.Data.Migrations
                     b.HasOne("TrainerHub.Domain.Entities.Client", "Client")
                         .WithMany("MealProgramAssignments")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TrainerHub.Domain.Entities.MealProgram", "MealProgram")
                         .WithMany("Assignments")
                         .HasForeignKey("MealProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Client");
@@ -631,13 +634,13 @@ namespace TrainerHub.Infrastructure.Data.Migrations
                     b.HasOne("TrainerHub.Domain.Entities.Client", "Client")
                         .WithMany("ProgramAssignments")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TrainerHub.Domain.Entities.TrainingProgram", "Program")
                         .WithMany("Assignments")
                         .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Client");
@@ -650,7 +653,7 @@ namespace TrainerHub.Infrastructure.Data.Migrations
                     b.HasOne("TrainerHub.Domain.Entities.Client", "Client")
                         .WithMany("ProgressEntries")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Client");
@@ -699,19 +702,19 @@ namespace TrainerHub.Infrastructure.Data.Migrations
                     b.HasOne("TrainerHub.Domain.Entities.Client", "Client")
                         .WithMany("WorkoutLogs")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TrainerHub.Domain.Entities.Exercise", "Exercise")
                         .WithMany()
                         .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TrainerHub.Domain.Entities.ProgramAssignment", "ProgramAssignment")
                         .WithMany()
                         .HasForeignKey("ProgramAssignmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Client");

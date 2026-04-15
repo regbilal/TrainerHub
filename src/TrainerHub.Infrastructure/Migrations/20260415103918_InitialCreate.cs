@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TrainerHub.Infrastructure.Data.Migrations
+namespace TrainerHub.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -88,6 +88,29 @@ namespace TrainerHub.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MealPrograms",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CoachId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MealPrograms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MealPrograms_Users_CoachId",
+                        column: x => x.CoachId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TrainingPrograms",
                 columns: table => new
                 {
@@ -130,7 +153,7 @@ namespace TrainerHub.Infrastructure.Data.Migrations
                         column: x => x.ClientId,
                         principalTable: "Clients",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -165,6 +188,53 @@ namespace TrainerHub.Infrastructure.Data.Migrations
                         name: "FK_Reviews_Users_ReviewerUserId",
                         column: x => x.ReviewerUserId,
                         principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MealDays",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MealProgramId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MealDays", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MealDays_MealPrograms_MealProgramId",
+                        column: x => x.MealProgramId,
+                        principalTable: "MealPrograms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MealProgramAssignments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MealProgramId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AssignedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MealProgramAssignments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MealProgramAssignments_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_MealProgramAssignments_MealPrograms_MealProgramId",
+                        column: x => x.MealProgramId,
+                        principalTable: "MealPrograms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -213,11 +283,37 @@ namespace TrainerHub.Infrastructure.Data.Migrations
                         column: x => x.ClientId,
                         principalTable: "Clients",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ProgramAssignments_TrainingPrograms_ProgramId",
                         column: x => x.ProgramId,
                         principalTable: "TrainingPrograms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MealItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MealDayId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    Calories = table.Column<int>(type: "int", nullable: true),
+                    ProteinGrams = table.Column<decimal>(type: "decimal(8,2)", precision: 8, scale: 2, nullable: true),
+                    CarbsGrams = table.Column<decimal>(type: "decimal(8,2)", precision: 8, scale: 2, nullable: true),
+                    FatGrams = table.Column<decimal>(type: "decimal(8,2)", precision: 8, scale: 2, nullable: true),
+                    Notes = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    Order = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MealItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MealItems_MealDays_MealDayId",
+                        column: x => x.MealDayId,
+                        principalTable: "MealDays",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -245,19 +341,19 @@ namespace TrainerHub.Infrastructure.Data.Migrations
                         column: x => x.ClientId,
                         principalTable: "Clients",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_WorkoutLogs_Exercises_ExerciseId",
                         column: x => x.ExerciseId,
                         principalTable: "Exercises",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_WorkoutLogs_ProgramAssignments_ProgramAssignmentId",
                         column: x => x.ProgramAssignmentId,
                         principalTable: "ProgramAssignments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -297,6 +393,31 @@ namespace TrainerHub.Infrastructure.Data.Migrations
                 name: "IX_Exercises_ProgramId_Order",
                 table: "Exercises",
                 columns: new[] { "ProgramId", "Order" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MealDays_MealProgramId_Order",
+                table: "MealDays",
+                columns: new[] { "MealProgramId", "Order" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MealItems_MealDayId_Order",
+                table: "MealItems",
+                columns: new[] { "MealDayId", "Order" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MealProgramAssignments_ClientId",
+                table: "MealProgramAssignments",
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MealProgramAssignments_MealProgramId",
+                table: "MealProgramAssignments",
+                column: "MealProgramId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MealPrograms_CoachId",
+                table: "MealPrograms",
+                column: "CoachId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProgramAssignments_ClientId",
@@ -363,6 +484,12 @@ namespace TrainerHub.Infrastructure.Data.Migrations
                 name: "ConnectionRequests");
 
             migrationBuilder.DropTable(
+                name: "MealItems");
+
+            migrationBuilder.DropTable(
+                name: "MealProgramAssignments");
+
+            migrationBuilder.DropTable(
                 name: "ProgressEntries");
 
             migrationBuilder.DropTable(
@@ -372,10 +499,16 @@ namespace TrainerHub.Infrastructure.Data.Migrations
                 name: "WorkoutLogs");
 
             migrationBuilder.DropTable(
+                name: "MealDays");
+
+            migrationBuilder.DropTable(
                 name: "Exercises");
 
             migrationBuilder.DropTable(
                 name: "ProgramAssignments");
+
+            migrationBuilder.DropTable(
+                name: "MealPrograms");
 
             migrationBuilder.DropTable(
                 name: "Clients");

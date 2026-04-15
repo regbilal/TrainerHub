@@ -114,26 +114,31 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         {
             entity.HasOne(e => e.Program)
                 .WithMany(e => e.Assignments)
-                .HasForeignKey(e => e.ProgramId);
+                .HasForeignKey(e => e.ProgramId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(e => e.Client)
                 .WithMany(e => e.ProgramAssignments)
-                .HasForeignKey(e => e.ClientId);
+                .HasForeignKey(e => e.ClientId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<WorkoutLog>(entity =>
         {
             entity.HasOne(e => e.Client)
                 .WithMany(e => e.WorkoutLogs)
-                .HasForeignKey(e => e.ClientId);
+                .HasForeignKey(e => e.ClientId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(e => e.ProgramAssignment)
                 .WithMany()
-                .HasForeignKey(e => e.ProgramAssignmentId);
+                .HasForeignKey(e => e.ProgramAssignmentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(e => e.Exercise)
                 .WithMany()
-                .HasForeignKey(e => e.ExerciseId);
+                .HasForeignKey(e => e.ExerciseId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.Property(e => e.WeightUsed).HasPrecision(10, 2);
         });
@@ -142,7 +147,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         {
             entity.HasOne(e => e.Client)
                 .WithMany(e => e.ProgressEntries)
-                .HasForeignKey(e => e.ClientId);
+                .HasForeignKey(e => e.ClientId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.Property(e => e.Weight).HasPrecision(10, 2);
             entity.Property(e => e.BodyFatPercentage).HasPrecision(5, 2);
@@ -183,11 +189,13 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         {
             entity.HasOne(e => e.MealProgram)
                 .WithMany(e => e.Assignments)
-                .HasForeignKey(e => e.MealProgramId);
+                .HasForeignKey(e => e.MealProgramId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(e => e.Client)
                 .WithMany(e => e.MealProgramAssignments)
-                .HasForeignKey(e => e.ClientId);
+                .HasForeignKey(e => e.ClientId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }
