@@ -1,0 +1,92 @@
+# Build outputs
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+dist/
+
+# .NET
+*.dll
+*.exe
+*.pdb
+*.cache
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet
+**/packages/
+*.nuget.props
+*.nuget.targets
+*.nuget.g.props
+*.nuget.g.targets
+
+# Visual Studio
+.vs/
+*.rsuser
+*.sln.iml
+launchSettings.json
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# User-specific files
+*.suo
+*.user
+*.dbmdl
+*.jfm
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+._*
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Vite
+dist/
+dist-ssr/
+*.local
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+appsettings.Development.json
+
+# EF Core Migrations (keep migrations, ignore snapshots cache)
+*.Designer.cs.bak
+
+# Logs
+logs/
+*.log
+
+# Coverage / test results
+coverage/
+TestResults/
+*.trx
+
+# Misc
+*.swp
+*.swo
+*~

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <data name="InvalidCredentials"><value>Invalid email or password.</value></data>
+  <data name="EmailAlreadyExists"><value>A user with this email already exists.</value></data>
+  <data name="InvalidInvitationToken"><value>Invalid invitation token.</value></data>
+  <data name="InvitationAlreadyUsed"><value>This invitation has already been used or has expired.</value></data>
+  <data name="ClientNotFound"><value>Client not found.</value></data>
+  <data name="ProgramNotFound"><value>Training program not found.</value></data>
+  <data name="ExerciseNotFound"><value>Exercise not found.</value></data>
+  <data name="AssignmentNotFound"><value>Program assignment not found.</value></data>
+  <data name="CoachNotFound"><value>Coach not found.</value></data>
+  <data name="PendingRequestExists"><value>A pending request already exists for this phone number.</value></data>
+  <data name="ConnectionRequestNotFound"><value>Connection request not found.</value></data>
+  <data name="RequestAlreadyReviewed"><value>This request has already been reviewed.</value></data>
+  <data name="RatingOutOfRange"><value>Rating must be between 1 and 5.</value></data>
+  <data name="RelationshipNotFound"><value>Client relationship not found.</value></data>
+  <data name="ClientNoLinkedUser"><value>Client has no linked user account.</value></data>
+  <data name="NotPartOfRelationship"><value>You are not part of this coach-client relationship.</value></data>
+  <data name="AlreadyReviewed"><value>You have already reviewed this relationship. Update your existing review instead.</value></data>
+  <data name="ReviewerNotFound"><value>Reviewer not found.</value></data>
+  <data name="RevieweeNotFound"><value>Reviewee not found.</value></data>
+  <data name="ReviewNotFound"><value>Review not found.</value></data>
+  <data name="CanOnlyUpdateOwnReview"><value>You can only update your own reviews.</value></data>
+  <data name="CanOnlyDeleteOwnReview"><value>You can only delete your own reviews.</value></data>
+  <data name="NotPartOfRelationshipGeneric"><value>You are not part of this relationship.</value></data>
+  <data name="UnexpectedError"><value>An unexpected error occurred</value></data>
+  <data name="MealProgramNotFound"><value>Meal program not found.</value></data>
+</root>

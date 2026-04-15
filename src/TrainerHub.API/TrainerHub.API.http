@@ -1,0 +1,6 @@
+@TrainerHub.API_HostAddress = http://localhost:5277
+
+GET {{TrainerHub.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

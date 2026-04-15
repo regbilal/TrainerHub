@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <data name="InvalidCredentials"><value>البريد الإلكتروني أو كلمة المرور غير صالحة.</value></data>
+  <data name="EmailAlreadyExists"><value>يوجد مستخدم بهذا البريد الإلكتروني بالفعل.</value></data>
+  <data name="InvalidInvitationToken"><value>رمز الدعوة غير صالح.</value></data>
+  <data name="InvitationAlreadyUsed"><value>تم استخدام هذه الدعوة بالفعل أو انتهت صلاحيتها.</value></data>
+  <data name="ClientNotFound"><value>لم يتم العثور على العميل.</value></data>
+  <data name="ProgramNotFound"><value>لم يتم العثور على برنامج التدريب.</value></data>
+  <data name="ExerciseNotFound"><value>لم يتم العثور على التمرين.</value></data>
+  <data name="AssignmentNotFound"><value>لم يتم العثور على تعيين البرنامج.</value></data>
+  <data name="CoachNotFound"><value>لم يتم العثور على المدرب.</value></data>
+  <data name="PendingRequestExists"><value>يوجد طلب معلق بالفعل لرقم الهاتف هذا.</value></data>
+  <data name="ConnectionRequestNotFound"><value>لم يتم العثور على طلب الاتصال.</value></data>
+  <data name="RequestAlreadyReviewed"><value>تمت مراجعة هذا الطلب بالفعل.</value></data>
+  <data name="RatingOutOfRange"><value>يجب أن يكون التقييم بين 1 و 5.</value></data>
+  <data name="RelationshipNotFound"><value>لم يتم العثور على علاقة العميل.</value></data>
+  <data name="ClientNoLinkedUser"><value>لا يوجد حساب مستخدم مرتبط بالعميل.</value></data>
+  <data name="NotPartOfRelationship"><value>أنت لست جزءاً من علاقة المدرب-العميل هذه.</value></data>
+  <data name="AlreadyReviewed"><value>لقد قمت بمراجعة هذه العلاقة بالفعل. قم بتحديث مراجعتك الحالية بدلاً من ذلك.</value></data>
+  <data name="ReviewerNotFound"><value>لم يتم العثور على المراجع.</value></data>
+  <data name="RevieweeNotFound"><value>لم يتم العثور على الشخص المراجع.</value></data>
+  <data name="ReviewNotFound"><value>لم يتم العثور على المراجعة.</value></data>
+  <data name="CanOnlyUpdateOwnReview"><value>يمكنك تحديث مراجعاتك الخاصة فقط.</value></data>
+  <data name="CanOnlyDeleteOwnReview"><value>يمكنك حذف مراجعاتك الخاصة فقط.</value></data>
+  <data name="NotPartOfRelationshipGeneric"><value>أنت لست جزءاً من هذه العلاقة.</value></data>
+  <data name="UnexpectedError"><value>حدث خطأ غير متوقع</value></data>
+  <data name="MealProgramNotFound"><value>لم يتم العثور على برنامج الوجبات.</value></data>
+</root>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <data name="InvalidCredentials"><value>Correo electrónico o contraseña inválidos.</value></data>
+  <data name="EmailAlreadyExists"><value>Ya existe un usuario con este correo electrónico.</value></data>
+  <data name="InvalidInvitationToken"><value>Token de invitación inválido.</value></data>
+  <data name="InvitationAlreadyUsed"><value>Esta invitación ya ha sido utilizada o ha expirado.</value></data>
+  <data name="ClientNotFound"><value>Cliente no encontrado.</value></data>
+  <data name="ProgramNotFound"><value>Programa de entrenamiento no encontrado.</value></data>
+  <data name="ExerciseNotFound"><value>Ejercicio no encontrado.</value></data>
+  <data name="AssignmentNotFound"><value>Asignación de programa no encontrada.</value></data>
+  <data name="CoachNotFound"><value>Entrenador no encontrado.</value></data>
+  <data name="PendingRequestExists"><value>Ya existe una solicitud pendiente para este número de teléfono.</value></data>
+  <data name="ConnectionRequestNotFound"><value>Solicitud de conexión no encontrada.</value></data>
+  <data name="RequestAlreadyReviewed"><value>Esta solicitud ya ha sido revisada.</value></data>
+  <data name="RatingOutOfRange"><value>La calificación debe estar entre 1 y 5.</value></data>
+  <data name="RelationshipNotFound"><value>Relación con el cliente no encontrada.</value></data>
+  <data name="ClientNoLinkedUser"><value>El cliente no tiene una cuenta de usuario vinculada.</value></data>
+  <data name="NotPartOfRelationship"><value>No eres parte de esta relación entrenador-cliente.</value></data>
+  <data name="AlreadyReviewed"><value>Ya has evaluado esta relación. Actualiza tu reseña existente.</value></data>
+  <data name="ReviewerNotFound"><value>Evaluador no encontrado.</value></data>
+  <data name="RevieweeNotFound"><value>Persona evaluada no encontrada.</value></data>
+  <data name="ReviewNotFound"><value>Reseña no encontrada.</value></data>
+  <data name="CanOnlyUpdateOwnReview"><value>Solo puedes actualizar tus propias reseñas.</value></data>
+  <data name="CanOnlyDeleteOwnReview"><value>Solo puedes eliminar tus propias reseñas.</value></data>
+  <data name="NotPartOfRelationshipGeneric"><value>No eres parte de esta relación.</value></data>
+  <data name="UnexpectedError"><value>Ocurrió un error inesperado</value></data>
+  <data name="MealProgramNotFound"><value>Programa de comidas no encontrado.</value></data>
+</root>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <data name="InvalidCredentials"><value>E-mail ou mot de passe invalide.</value></data>
+  <data name="EmailAlreadyExists"><value>Un utilisateur avec cet e-mail existe déjà.</value></data>
+  <data name="InvalidInvitationToken"><value>Jeton d'invitation invalide.</value></data>
+  <data name="InvitationAlreadyUsed"><value>Cette invitation a déjà été utilisée ou a expiré.</value></data>
+  <data name="ClientNotFound"><value>Client introuvable.</value></data>
+  <data name="ProgramNotFound"><value>Programme d'entraînement introuvable.</value></data>
+  <data name="ExerciseNotFound"><value>Exercice introuvable.</value></data>
+  <data name="AssignmentNotFound"><value>Affectation de programme introuvable.</value></data>
+  <data name="CoachNotFound"><value>Coach introuvable.</value></data>
+  <data name="PendingRequestExists"><value>Une demande en attente existe déjà pour ce numéro de téléphone.</value></data>
+  <data name="ConnectionRequestNotFound"><value>Demande de connexion introuvable.</value></data>
+  <data name="RequestAlreadyReviewed"><value>Cette demande a déjà été examinée.</value></data>
+  <data name="RatingOutOfRange"><value>La note doit être comprise entre 1 et 5.</value></data>
+  <data name="RelationshipNotFound"><value>Relation client introuvable.</value></data>
+  <data name="ClientNoLinkedUser"><value>Le client n'a pas de compte utilisateur associé.</value></data>
+  <data name="NotPartOfRelationship"><value>Vous ne faites pas partie de cette relation coach-client.</value></data>
+  <data name="AlreadyReviewed"><value>Vous avez déjà évalué cette relation. Mettez à jour votre avis existant.</value></data>
+  <data name="ReviewerNotFound"><value>Évaluateur introuvable.</value></data>
+  <data name="RevieweeNotFound"><value>Personne évaluée introuvable.</value></data>
+  <data name="ReviewNotFound"><value>Avis introuvable.</value></data>
+  <data name="CanOnlyUpdateOwnReview"><value>Vous ne pouvez mettre à jour que vos propres avis.</value></data>
+  <data name="CanOnlyDeleteOwnReview"><value>Vous ne pouvez supprimer que vos propres avis.</value></data>
+  <data name="NotPartOfRelationshipGeneric"><value>Vous ne faites pas partie de cette relation.</value></data>
+  <data name="UnexpectedError"><value>Une erreur inattendue s'est produite</value></data>
+  <data name="MealProgramNotFound"><value>Programme de repas introuvable.</value></data>
+</root>
