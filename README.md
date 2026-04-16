@@ -62,24 +62,39 @@ If you **replaced or recreated** the initial migration, use an **empty** databas
 
 On startup, the API runs **`MigrateAsync()`** and, when the **`Users`** table has no rows, runs **`DatabaseSeeder`** (requires a working connection).
 
-### 2. Run the Backend
+### 2. Local development (Kestrel + Vite)
 
-```bash
-cd src/TrainerHub.API
-dotnet run
-```
+The app uses the same pattern as many ASP.NET + SPA setups: **you browse the site through Kestrel**, not through the Vite port. In Development, ASP.NET **proxies non-API requests to the Vite dev server** (`Microsoft.AspNetCore.SpaServices.Extensions`), so the browser stays **same-origin** with the API. The React client calls **`/api/...`** (see `trainer-hub-client/src/lib/api.ts`); no separate “API URL” is required in the frontend.
 
-The API will be available at `http://localhost:5000`. Swagger UI at `http://localhost:5000/swagger` (Development).
+**Ports** (defaults in `TrainerHub.API/Properties/launchSettings.json`):
 
-### 3. Run the Frontend
+| Service | URL | Role |
+|--------|-----|------|
+| **ASP.NET (Kestrel or IIS Express)** | `http://localhost:5000` | **Open this in the browser** — serves `/api`, `/swagger`, and proxies the SPA to Vite |
+| **Vite** | `http://localhost:5173` | Dev-only asset + HMR server; do **not** use this as the main app URL |
 
-```bash
-cd src/trainer-hub-client
-npm install
-npm run dev
-```
+**Steps** (two terminals):
 
-The Vite dev server proxies `/api` to `http://localhost:5000` (see `vite.config.ts`).
+1. **Frontend — start Vite first** (so the proxy has a target):
+
+   ```bash
+   cd src/trainer-hub-client
+   npm install
+   npm run dev
+   ```
+
+2. **Backend — start the API**:
+
+   ```bash
+   cd src/TrainerHub.API
+   dotnet run
+   ```
+
+3. Open **`http://localhost:5000`** in the browser. Swagger: **`http://localhost:5000/swagger`**.
+
+If the SPA does not load, confirm Vite is running on **5173** (`strictPort` in `vite.config.ts`) and that nothing else is blocking the connection.
+
+**Production builds** are not served by this proxy: run `npm run build` in `trainer-hub-client` and host the `dist` output from the API (static files + SPA fallback) as you would for any ASP.NET–hosted React app.
 
 ## Test Data (Seeded Accounts)
 
