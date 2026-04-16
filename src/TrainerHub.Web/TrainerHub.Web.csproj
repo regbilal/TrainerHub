@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TrainerHub.Web</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <!-- React/Vite SPA — Node/npm own dev/build; this project anchors the UI in the .NET solution. -->
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="SpaProjectMarker.cs" />
+  </ItemGroup>
+</Project>

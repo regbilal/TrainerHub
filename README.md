@@ -20,7 +20,7 @@ src/
 ├── TrainerHub.Infrastructure/   # EF Core DbContext (Identity), Migrations, JWT & SMS Services, DatabaseSeeder
 │   └── Data/                   # ApplicationDbContext, DesignTimeDbContextFactory (EF tools), DatabaseSeeder
 ├── TrainerHub.API/              # Controllers, Middleware (GlobalExceptionHandler), Program.cs
-└── trainer-hub-client/          # React frontend (Vite + TypeScript)
+└── TrainerHub.Web/              # React SPA (Vite + TypeScript); .NET project anchors the folder in the solution
     └── src/
         ├── components/          # Layout, LanguagePicker
         ├── lib/                 # api.ts, auth.tsx, i18n.ts
@@ -64,7 +64,7 @@ On startup, the API runs **`MigrateAsync()`** and, when the **`Users`** table ha
 
 ### 2. Local development (Kestrel + Vite)
 
-The app uses the same pattern as many ASP.NET + SPA setups: **you browse the site through Kestrel**, not through the Vite port. In Development, ASP.NET **proxies non-API requests to the Vite dev server** (`Microsoft.AspNetCore.SpaServices.Extensions`), so the browser stays **same-origin** with the API. The React client calls **`/api/...`** (see `trainer-hub-client/src/lib/api.ts`); no separate “API URL” is required in the frontend.
+The app uses the same pattern as many ASP.NET + SPA setups: **you browse the site through Kestrel**, not through the Vite port. In Development, ASP.NET **proxies non-API requests to the Vite dev server** (`Microsoft.AspNetCore.SpaServices.Extensions`), so the browser stays **same-origin** with the API. The React client calls **`/api/...`** (see `TrainerHub.Web/src/lib/api.ts`); no separate “API URL” is required in the frontend.
 
 **Ports** (defaults in `TrainerHub.API/Properties/launchSettings.json`):
 
@@ -78,7 +78,7 @@ The app uses the same pattern as many ASP.NET + SPA setups: **you browse the sit
 1. **Frontend — start Vite first** (so the proxy has a target):
 
    ```bash
-   cd src/trainer-hub-client
+   cd src/TrainerHub.Web
    npm install
    npm run dev
    ```
@@ -94,7 +94,7 @@ The app uses the same pattern as many ASP.NET + SPA setups: **you browse the sit
 
 If the SPA does not load, confirm Vite is running on **5173** (`strictPort` in `vite.config.ts`) and that nothing else is blocking the connection.
 
-**Production builds** are not served by this proxy: run `npm run build` in `trainer-hub-client` and host the `dist` output from the API (static files + SPA fallback) as you would for any ASP.NET–hosted React app.
+**Production builds** are not served by this proxy: run `npm run build` in `TrainerHub.Web` and host the `dist` output from the API (static files + SPA fallback) as you would for any ASP.NET–hosted React app.
 
 ## Test Data (Seeded Accounts)
 

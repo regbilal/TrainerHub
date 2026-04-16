@@ -82,7 +82,7 @@ app.UseRequestLocalization(options =>
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Dev: browse http://localhost:5000 (Kestrel). Run `npm run dev` in trainer-hub-client (Vite on 5173).
+// Dev: browse http://localhost:5000 (Kestrel). Run `npm run dev` in TrainerHub.Web (Vite on 5173).
 // Must run before MapControllers so / and assets are proxied to Vite; /api and /swagger skip this branch.
 if (app.Environment.IsDevelopment())
 {
@@ -94,7 +94,7 @@ if (app.Environment.IsDevelopment())
         {
             branch.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "../trainer-hub-client";
+                spa.Options.SourcePath = "../TrainerHub.Web";
                 spa.UseProxyToSpaDevelopmentServer("http://localhost:5173");
             });
         });
